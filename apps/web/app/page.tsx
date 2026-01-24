@@ -1,7 +1,12 @@
-export default function Home() {
+import { prisma } from "@repo/db";
+
+export default async function Home() {
+  console.log("prisma", await prisma.user.findMany({select: {
+    name: true
+  }}));
+
   return (
-    <main className="flex-col items-center min-h-screen justify-center">
-      <div className="font-black text-4xl">Work with us</div>
+    <main className="flex flex-col items-center min-h-screen justify-center">
       <div className="font-black">font black</div>
       <div className="font-extrabold">font extrabold</div>
       <div className="font-bold">font bold</div>
