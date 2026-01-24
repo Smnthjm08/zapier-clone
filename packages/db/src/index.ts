@@ -8,7 +8,10 @@ dotenv.config({ path: "../../.env" });
 const connectionString = `${process.env.DATABASE_URL}`;
 
 const adapter = new PrismaPg({ connectionString: connectionString });
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient({
+  adapter,
+  log: ["query", "info", "warn", "error"],
+});
 
 export { prisma };
 export * from "./generated/prisma/client";

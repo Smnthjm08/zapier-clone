@@ -1,0 +1,24 @@
+{
+  "name": "@repo/auth",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "clean": "rm -rf node_modules"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@repo/db": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "better-auth": "^1.4.17"
+  },
+  "exports": {
+    "./client": "./src/client.ts",
+    "./server": "./src/auth.ts"
+  }
+}

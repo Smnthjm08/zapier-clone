@@ -1,9 +1,14 @@
 import { prisma } from "@repo/db";
 
 export default async function Home() {
-  console.log("prisma", await prisma.user.findMany({select: {
-    name: true
-  }}));
+  console.log(
+    "prisma",
+    await prisma.user.findMany({
+      select: {
+        name: true,
+      },
+    }),
+  );
 
   return (
     <main className="flex flex-col items-center min-h-screen justify-center">
