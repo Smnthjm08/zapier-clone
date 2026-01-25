@@ -1,0 +1,22 @@
+{
+  "name": "processor",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --hot run src/index.ts",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@repo/auth": "*",
+    "@repo/db": "*",
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
+}
