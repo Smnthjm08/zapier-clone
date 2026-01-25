@@ -20,14 +20,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning suppressContentEditableWarning>
-      <body className={`${calSans.variable} antialiased`}>
+    <html lang="en" className={`${calSans.variable}`} suppressHydrationWarning suppressContentEditableWarning>
+      <body className={`antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
-
         >
           {children}
         </ThemeProvider>
