@@ -14,6 +14,15 @@ export const auth = betterAuth({
       // Send an email to the user with a link to reset their password
     },
   },
+  user: {
+    additionalFields: {
+      username: {
+        type: "string",
+        required: false,
+        unique: true,
+      },
+    },
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
