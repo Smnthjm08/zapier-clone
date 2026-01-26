@@ -3,16 +3,17 @@ import { zapService } from "../services/zap.service.js";
 
 export const getAllZaps = async (req: Request, res: Response) => {
   try {
-    const { pageSize, page } = req.query;
+    const pageSize = req.query.pageSize ? Number(req.query.pageSize) : 10;
+    const page = req.query.page ? Number(req.query.page) : 1;
     const zaps = await zapService.getAllZaps(
       req.user.id,
-      Number(pageSize),
-      Number(page),
+      pageSize,
+      page,
     );
     return res.status(200).json(zaps);
   } catch (error) {
     console.log("error fetching zaps", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error", error: error });
   }
 };
 
@@ -23,7 +24,7 @@ export const getZapById = async (req: Request, res: Response) => {
     return res.status(200).json(zap);
   } catch (error) {
     console.log("error fetching zap", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error", error: error });
   }
 };
 
@@ -35,7 +36,7 @@ export const createZap = async (req: Request, res: Response) => {
     return res.status(200).json(zap);
   } catch (error) {
     console.log("error creating zap", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error", error: error });
   }
 };
 
@@ -51,7 +52,7 @@ export const updateZap = async (req: Request, res: Response) => {
     return res.status(200).json(zap);
   } catch (error) {
     console.log("error updating zap", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error", error: error });
   }
 };
 
@@ -62,6 +63,6 @@ export const deleteZap = async (req: Request, res: Response) => {
     return res.status(200).json(zap);
   } catch (error) {
     console.log("error deleting zap", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error", error: error });
   }
 };

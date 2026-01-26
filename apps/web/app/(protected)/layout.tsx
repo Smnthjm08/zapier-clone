@@ -1,4 +1,6 @@
-import Navbar from "@/components/navbar";
+import { AppHeader } from "@/components/app-header";
+import AppSidebar from "@/components/app-sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 export default function ProtectedLayout({
   children,
@@ -6,9 +8,19 @@ export default function ProtectedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
-      <Navbar />
-      {children}
-    </div>
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar />
+      <SidebarInset>
+        <AppHeader />
+        {children}
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

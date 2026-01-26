@@ -8,10 +8,13 @@ export class ZapService {
   async getAllZaps(userId: string, pageSize: number = 10, page: number = 1) {
     const zaps = await prisma.zap.findMany({
       where: {
-        userId,
+        userId: userId
       },
       take: pageSize,
       skip: (page - 1) * pageSize,
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     return zaps;
   }
