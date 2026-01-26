@@ -4,6 +4,7 @@ import express, { Router } from "express";
 import cors from "cors";
 import authMiddleware from "./middlewares/auth.middleware.js";
 import chalk from "chalk";
+import { zapRoutes } from "./routes/zap.route.js";
 
 const app = express();
 const PORT = process.env.BE_PORT || 3004;
@@ -35,6 +36,8 @@ v1Router.get("/me", authMiddleware, (req, res) => {
 });
 
 app.use("/api/v1", v1Router);
+
+v1Router.use("/zap", authMiddleware, zapRoutes);
 
 app.listen(PORT, () => {
   console.log(chalk.yellowBright(`Server is running on PORT ${PORT}`));

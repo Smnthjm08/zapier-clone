@@ -76,9 +76,12 @@ model Verification {
 }
 
 model Zap {
-  id     String @id @default(uuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  // isActive Boolean @default(true)
+  userId      String
+  user        User    @relation(fields: [userId], references: [id])
 
   trigger Trigger?
   actions Action[]
@@ -96,11 +99,11 @@ model Trigger {
 }
 
 model Action {
-  id       String @id @default(uuid())
-  zapId    String
-  typeId   String
-  order    Int
-  metadata Json   @default("{}")
+  id           String @id @default(uuid())
+  zapId        String
+  typeId       String
+  sortingOrder Int    @default(0)
+  metadata     Json   @default("{}")
 
   zap  Zap             @relation(fields: [zapId], references: [id])
   type AvailableAction @relation(fields: [typeId], references: [id])

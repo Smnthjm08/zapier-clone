@@ -133,3 +133,8 @@ Learn more about the power of Turborepo:
 - [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
 - [Configuration Options](https://turborepo.dev/docs/reference/configuration)
 - [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+
+./kafka-topics.sh --create --topic zap-events --bootstrap-server localhost:9092
+Created topic zap-events.
+
+./kafka-console-consumer.sh --create --topic zap-events --from-beginning --bootstrap-server localhost:9092
