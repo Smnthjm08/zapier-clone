@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PlusCircleIcon, Loader2 } from "lucide-react";
-import { axiosInstance } from "@/lib/axios";
+import { createZapAction } from "@/actions/zap";
 
 export function CreateZapDialog() {
   const router = useRouter();
@@ -31,18 +31,22 @@ export function CreateZapDialog() {
 
     try {
       setLoading(true);
-      const response = await axiosInstance.post("/zap", {
+      const response = await createZapAction({
         name: name,
         description: description,
       });
+
+      if (response.error) {
+        console.error("Failed to create zap:", response.error);
+        return;
+      }
+
       console.log("response", response);
 
-      // Reset form and close dialog
       setName("");
       setDescription("");
       setOpen(false);
 
-      // Redirect to zap builder
       router.push(`/app/zaps/${response?.data?.id}`);
     } catch (err) {
       console.error(err);
