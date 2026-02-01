@@ -2,6 +2,9 @@
   "name": "processor",
   "module": "src/index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun --hot run src/index.ts"
+  },
   "devDependencies": {
     "@repo/auth": "*",
     "@repo/db": "*",
@@ -12,5 +15,8 @@
   "peerDependencies": {
     "typescript": "^5"
   },
-  "private": true
+  "private": true,
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
 }

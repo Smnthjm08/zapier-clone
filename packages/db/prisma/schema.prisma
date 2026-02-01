@@ -69,6 +69,26 @@ model Verification {
   @@map("verification")
 }
 
+model AvailableTrigger {
+  id    String @id @default(uuid())
+  name  String
+  image String
+
+  triggers Trigger[]
+
+  @@map("available_trigger")
+}
+
+model AvailableAction {
+  id    String @id @default(uuid())
+  name  String
+  image String
+
+  actions Action[]
+
+  @@map("available_action")
+}
+
 model Zap {
   id          String  @id @default(uuid())
   name        String
@@ -80,6 +100,8 @@ model Zap {
   trigger Trigger?
   actions Action[]
   zapRun  ZapRun[]
+
+  @@map("zap")
 }
 
 model Trigger {
@@ -90,6 +112,8 @@ model Trigger {
 
   zap  Zap              @relation(fields: [zapId], references: [id])
   type AvailableTrigger @relation(fields: [typeId], references: [id])
+
+  @@map("trigger")
 }
 
 model Action {
@@ -101,22 +125,8 @@ model Action {
 
   zap  Zap             @relation(fields: [zapId], references: [id])
   type AvailableAction @relation(fields: [typeId], references: [id])
-}
 
-model AvailableTrigger {
-  id    String @id @default(uuid())
-  name  String
-  image String
-
-  triggers Trigger[]
-}
-
-model AvailableAction {
-  id    String @id @default(uuid())
-  name  String
-  image String
-
-  actions Action[]
+  @@map("action")
 }
 
 model ZapRun {
@@ -126,6 +136,8 @@ model ZapRun {
   zapId        String
   zap          Zap           @relation(fields: [zapId], references: [id])
   zapRunOutbox ZapRunOutbox?
+
+  @@map("zap_run")
 }
 
 model ZapRunOutbox {
@@ -133,4 +145,6 @@ model ZapRunOutbox {
 
   zapRunId String @unique
   zapRun   ZapRun @relation(fields: [zapRunId], references: [id])
+
+  @@map("zap_run_outbox")
 }

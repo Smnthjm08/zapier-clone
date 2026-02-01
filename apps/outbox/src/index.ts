@@ -1,61 +1,61 @@
-// this is the kafka producer
-import { prisma } from "@repo/db";
-import { Kafka } from "kafkajs";
+// // this is the kafka producer
+// import { prisma } from "@repo/db";
+// import { Kafka } from "kafkajs";
 
-const KAFKA_TOPIC = "zap-events";
+// const KAFKA_TOPIC = "zap-events";
 
-const kafka = new Kafka({
-  clientId: "outbox",
-  brokers: ["localhost:9092"],
-});
+// const kafka = new Kafka({
+//   clientId: "outbox",
+//   brokers: ["localhost:9092"],
+// });
 
-interface ZapRunOutbox {
-  id: string;
-  zapRunId: string;
-}
+// interface ZapRunOutbox {
+//   id: string;
+//   zapRunId: string;
+// }
 
-async function main() {
-  const producer = kafka.producer();
-  await producer.connect();
+// async function main() {
+//   const producer = kafka.producer();
+//   await producer.connect();
 
-  while (true) {
-    try {
-      const pendingExecution = await prisma.zapRunOutbox.findMany({
-        where: {},
-        take: 10,
-      });
+//   while (true) {
+//     try {
+//       const pendingExecution = await prisma.zapRunOutbox.findMany({
+//         where: {},
+//         take: 10,
+//       });
 
-      // pendingExecution.forEach(element => {
-      //     producer.send({
-      //         topic: KAFKA_TOPIC,
-      //         messages: [{
-      //             value: JSON.stringify(element),
+//       // pendingExecution.forEach(element => {
+//       //     producer.send({
+//       //         topic: KAFKA_TOPIC,
+//       //         messages: [{
+//       //             value: JSON.stringify(element),
 
-      //         }],
-      //     })
-      // });
+//       //         }],
+//       //     })
+//       // });
 
-      producer.send({
-        topic: KAFKA_TOPIC,
-        messages: [
-          pendingExecution.map((r: ZapRunOutbox) => ({
-            value: JSON.stringify(r.zapRunId),
-          })),
-        ],
-      });
+//       producer.send({
+//         topic: KAFKA_TOPIC,
+//         messages: [
+//           pendingExecution.map((r: ZapRunOutbox) => ({
+//             value: JSON.stringify(r.zapRunId),
+//           })),
+//         ],
+//       });
 
-      await prisma.zapRunOutbox.deleteMany({
-        where: {
-          id: {
-            in: pendingExecution.map((r: ZapRunOutbox) => r.id),
-          },
-        },
-      });
-    } catch (error) {
-      console.error(error);
-      return;
-    }
-  }
-}
+//       await prisma.zapRunOutbox.deleteMany({
+//         where: {
+//           id: {
+//             in: pendingExecution.map((r: ZapRunOutbox) => r.id),
+//           },
+//         },
+//       });
+//     } catch (error) {
+//       console.error(error);
+//       return;
+//     }
+//   }
+// }
 
-main();
+// main();
