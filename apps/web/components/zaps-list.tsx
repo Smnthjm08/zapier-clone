@@ -47,10 +47,7 @@ export default function ZapsList() {
               </CardDescription>
             </Link>
             <CardAction>
-              <DeleteZapDialog
-                zapId={zap.id}
-                onSuccess={handleDeleteSuccess}
-              />
+              <DeleteZapDialog zapId={zap.id} onSuccess={handleDeleteSuccess} />
             </CardAction>
           </CardHeader>
         </Card>
