@@ -1,5 +1,5 @@
 {
-  "name": "processor",
+  "name": "webhook",
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
@@ -11,13 +11,13 @@
     "@repo/db": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/express": "^5.0.6"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
-  "private": true,
   "dependencies": {
-    "kafkajs": "^2.2.4"
+    "express": "^5.2.1"
   }
 }

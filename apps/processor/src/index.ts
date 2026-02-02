@@ -19,6 +19,8 @@ interface ZapRunOutbox {
 
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
+let isShuttingDown = false;
+
 async function processZaps() {
   const producer = kafka.producer({
     createPartitioner: Partitioners.LegacyPartitioner,
@@ -30,34 +32,55 @@ async function processZaps() {
   });
 
   await producer.connect();
+  console.log("Outbox processor connected");
 
-  while (true) {
-    const pendingZaps = await prisma.zapRunOutbox.findMany({
-      take: 10,
-    });
+  while (!isShuttingDown) {
+    try {
+      const pendingZaps = await prisma.zapRunOutbox.findMany({
+        take: 10,
+      });
 
-    if (pendingZaps.length === 0) {
-      await sleep(1000);
-      continue;
-    }
-    await producer.send({
-      topic: KAFKA_TOPIC,
-      messages: pendingZaps.map((row: ZapRunOutbox) => ({
-        key: row.id,
-        value: row.zapRunId,
-      })),
-    });
+      if (pendingZaps.length === 0) {
+        await sleep(1000);
+        continue;
+      }
 
-    await prisma.zapRunOutbox.deleteMany({
-      where: {
-        id: {
-          in: pendingZaps.map((r: ZapRunOutbox) => r.id),
+      await producer.send({
+        topic: KAFKA_TOPIC,
+        messages: pendingZaps.map((row: ZapRunOutbox) => ({
+          key: row.id,
+          value: JSON.stringify({ zapRunId: row.zapRunId }),
+        })),
+      });
+
+      await prisma.zapRunOutbox.deleteMany({
+        where: {
+          id: {
+            in: pendingZaps.map((r: ZapRunOutbox) => r.id),
+          },
         },
-      },
-    });
+      });
 
-    await sleep(100);
+      console.log(`Processed ${pendingZaps.length} zaps`);
+      await sleep(100);
+    } catch (error) {
+      console.error("Error processing batch:", error);
+      await sleep(5000);
+    }
   }
+
+  await producer.disconnect();
+  console.log("Outbox processor disconnected");
 }
+
+process.on("SIGINT", () => {
+  console.log("Shutting down outbox processor...");
+  isShuttingDown = true;
+});
+
+process.on("SIGTERM", () => {
+  console.log("Shutting down outbox processor...");
+  isShuttingDown = true;
+});
 
 processZaps().catch(console.error);

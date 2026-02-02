@@ -106,11 +106,12 @@ model Zap {
 
 model Trigger {
   id       String @id @default(uuid())
-  zapId    String @unique
-  typeId   String
   metadata Json   @default("{}")
-
+  
+  zapId    String @unique
   zap  Zap              @relation(fields: [zapId], references: [id])
+
+  typeId   String
   type AvailableTrigger @relation(fields: [typeId], references: [id])
 
   @@map("trigger")
@@ -118,13 +119,14 @@ model Trigger {
 
 model Action {
   id           String @id @default(uuid())
-  zapId        String
-  typeId       String
   sortingOrder Int    @default(0)
   metadata     Json   @default("{}")
 
-  zap  Zap             @relation(fields: [zapId], references: [id])
-  type AvailableAction @relation(fields: [typeId], references: [id])
+  zapId String
+  zap   Zap    @relation(fields: [zapId], references: [id])
+
+  typeId String
+  type   AvailableAction @relation(fields: [typeId], references: [id])
 
   @@map("action")
 }
@@ -133,15 +135,24 @@ model ZapRun {
   id       String @id @default(uuid())
   metadata Json
 
-  zapId        String
-  zap          Zap           @relation(fields: [zapId], references: [id])
+  zapId String
+  zap   Zap    @relation(fields: [zapId], references: [id])
+
   zapRunOutbox ZapRunOutbox?
 
   @@map("zap_run")
 }
 
+enum OutboxStatus {
+  PENDING
+  PROCESSING
+  SENT
+}
+
 model ZapRunOutbox {
   id String @id @default(uuid())
+
+  status OutboxStatus @default(PENDING)
 
   zapRunId String @unique
   zapRun   ZapRun @relation(fields: [zapRunId], references: [id])
