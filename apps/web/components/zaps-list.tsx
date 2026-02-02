@@ -20,6 +20,7 @@ export default function ZapsList() {
     const fetchZaps = async () => {
       const res = await getZapsAction();
       if (res.data) {
+        console.log(res.data);
         setData(res.data);
       }
     };

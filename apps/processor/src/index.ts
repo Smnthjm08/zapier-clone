@@ -1,9 +1,9 @@
 import { prisma } from "@repo/db";
-import { Kafka } from "kafkajs";
+import { Kafka, Partitioners } from "kafkajs";
 
 const KAFKA_CLIENT_ID = "outbox-processor";
 const KAFKA_BROKERS = ["localhost:9092"];
-const KADKA_TOPIC = "events";
+const KAFKA_TOPIC = "events";
 
 const kafka = new Kafka({
   clientId: KAFKA_CLIENT_ID,
@@ -17,26 +17,36 @@ interface ZapRunOutbox {
   zapRunId: string;
 }
 
+const sleep = (ms: number) =>
+  new Promise((res) => setTimeout(res, ms));
+
 async function processZaps() {
-  const producer = kafka.producer();
+  const producer = kafka.producer({
+    createPartitioner: Partitioners.LegacyPartitioner,
+    retry: {
+      retries: 10,
+      initialRetryTime: 500,
+      maxRetryTime: 5000,
+    }
+  });
+
   await producer.connect();
 
   while (true) {
     const pendingZaps = await prisma.zapRunOutbox.findMany({
-      // where: {processed: false},
       take: 10,
     });
-    // pendingZaps.array.forEach((element) => {
-    //   element;
-    // producer.sendBatch
+
+    if (pendingZaps.length === 0) {
+      await sleep(1000);
+      continue;
+    }
     await producer.send({
-      topic: KADKA_TOPIC,
-      messages: pendingZaps?.map((row: ZapRunOutbox) => {
-        return {
-          //   key: row.id,
-          value: row.zapRunId,
-        };
-      }),
+      topic: KAFKA_TOPIC,
+      messages: pendingZaps.map((row: ZapRunOutbox) => ({
+        key: row.id,
+        value: row.zapRunId,
+      })),
     });
 
     await prisma.zapRunOutbox.deleteMany({
@@ -46,7 +56,9 @@ async function processZaps() {
         },
       },
     });
+
+    await sleep(100);
   }
 }
 
-processZaps();
+processZaps().catch(console.error);
