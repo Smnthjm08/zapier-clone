@@ -17,8 +17,7 @@ interface ZapRunOutbox {
   zapRunId: string;
 }
 
-const sleep = (ms: number) =>
-  new Promise((res) => setTimeout(res, ms));
+const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 async function processZaps() {
   const producer = kafka.producer({
@@ -27,7 +26,7 @@ async function processZaps() {
       retries: 10,
       initialRetryTime: 500,
       maxRetryTime: 5000,
-    }
+    },
   });
 
   await producer.connect();

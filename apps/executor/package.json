@@ -3,7 +3,8 @@
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
-    "dev": "bun --hot run src/index.ts"
+    "dev": "bun --hot run src/index.ts",
+    "build": "tsc"
   },
   "devDependencies": {
     "@repo/auth": "*",
