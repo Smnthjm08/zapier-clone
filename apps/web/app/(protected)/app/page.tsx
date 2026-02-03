@@ -1,6 +1,6 @@
 "use client";
-import { CreateZapDialog } from "@/components/create-zap-dialog";
-import ZapsList from "@/components/zaps-list";
+import { CreateZapDialog } from "@/components/dialogs/create-zap-dialog";
+import ZapsList from "@/components/cards/zaps-list";
 
 export default function AppPage() {
   return (

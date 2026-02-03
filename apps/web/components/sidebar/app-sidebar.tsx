@@ -4,14 +4,17 @@ import { app } from "@/constants/base";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "./ui/sidebar";
+  SidebarSeparator,
+} from "../ui/sidebar";
 import Link from "next/link";
 import { NavSidebar } from "./nav-sidebar";
-import { AxeIcon, Home, KeyRound } from "lucide-react";
+import { AxeIcon, Compass, Home, KeyRound, Settings, User } from "lucide-react";
+import { AppFooter } from "./app-footer";
 
 export default function AppSidebar() {
   return (
@@ -39,19 +42,36 @@ export default function AppSidebar() {
               url: "/app",
               icon: Home,
             },
-            // {
-            //   title: "Zaps",
-            //   url: "/app/zaps",
-            //   icon: PlusCircleIcon,
-            // },
             {
               title: "Integrations",
               url: "/app/integrations",
               icon: KeyRound,
             },
+            {
+              title: "Discover",
+              url: "/app/discover",
+              icon: Compass,
+            }
           ]}
         />
       </SidebarContent>
-    </Sidebar>
+      <SidebarSeparator />
+      <SidebarFooter>
+        <AppFooter
+          items={[
+            {
+              title: "My Profile",
+              url: "/app/my-profile",
+              icon: User,
+            },
+            {
+              title: "Settings",
+              url: "/app/settings",
+              icon: Settings,
+            },
+          ]}
+        />
+      </SidebarFooter>
+    </Sidebar >
   );
 }

@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { getZapsAction } from "@/actions/zap";
-import { DeleteZapDialog } from "./delete-zap-dialog";
+import { DeleteZapDialog } from "../dialogs/delete-zap-dialog";
 import Link from "next/link";
 
 export default function ZapsList() {
@@ -20,7 +20,6 @@ export default function ZapsList() {
     const fetchZaps = async () => {
       const res = await getZapsAction();
       if (res.data) {
-        console.log(res.data);
         setData(res.data);
       }
     };

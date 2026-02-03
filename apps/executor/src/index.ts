@@ -31,7 +31,7 @@ async function runExecutor() {
         await new Promise((res) => setTimeout(res, 5000));
 
         console.log(
-          `Processed message: ${topic}[${partition}] offset ${message.offset}`
+          `Processed message: ${topic}[${partition}] offset ${message.offset}`,
         );
 
         await consumer.commitOffsets([
@@ -44,7 +44,7 @@ async function runExecutor() {
       } catch (error) {
         console.error(
           `Error processing message at offset ${message.offset}:`,
-          error
+          error,
         );
         // You can implement DLQ (Dead Letter Queue) logic here
         throw error;

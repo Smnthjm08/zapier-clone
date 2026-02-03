@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { app } from "@/constants/base";
 import { AnchoredToastProvider, ToastProvider } from "@/components/ui/toast";
 

@@ -42,7 +42,7 @@ export function DeleteZapDialog({ zapId, onSuccess }: DeleteZapDialogProps) {
     <AlertDialog>
       <AlertDialogTrigger
         render={
-          <Button variant={"destructive"} className="bg-red-400">
+          <Button variant={"destructive"} className="bg-red-500 hover:bg-red-600">
             Delete
           </Button>
         }

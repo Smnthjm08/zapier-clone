@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { LucideGithub } from "lucide-react";
 import Link from "next/link";
-import ThemeToggle from "./theme-toggle";
+import ThemeToggle from "../theme-toggle";
 
 export function AppHeader() {
   return (
