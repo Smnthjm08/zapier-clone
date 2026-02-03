@@ -109,3 +109,46 @@ export async function deleteZapAction(zapId: string) {
     return { error: "Internal Server Error", status: 500 };
   }
 }
+
+export async function getZapByIdAction(zapId: string) {
+  try {
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session || !session.user) {
+      return { error: "Unauthorized", status: 401 };
+    }
+
+    const zap = await prisma.zap.findUnique({
+      where: {
+        id: zapId,
+        userId: session.user.id,
+      },
+      include: {
+        trigger: {
+          include: {
+            type: true,
+          },
+        },
+        actions: {
+          include: {
+            type: true,
+          },
+          orderBy: {
+            sortingOrder: "asc",
+          },
+        },
+      },
+    });
+
+    if (!zap) {
+      return { error: "Zap not found", status: 404 };
+    }
+
+    return { data: zap, status: 200 };
+  } catch (error) {
+    console.error("Error fetching zap by id via server action:", error);
+    return { error: "Internal Server Error", status: 500 };
+  }
+}

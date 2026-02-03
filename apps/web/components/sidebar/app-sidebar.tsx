@@ -51,7 +51,7 @@ export default function AppSidebar() {
               title: "Discover",
               url: "/app/discover",
               icon: Compass,
-            }
+            },
           ]}
         />
       </SidebarContent>
@@ -72,6 +72,6 @@ export default function AppSidebar() {
           ]}
         />
       </SidebarFooter>
-    </Sidebar >
+    </Sidebar>
   );
 }

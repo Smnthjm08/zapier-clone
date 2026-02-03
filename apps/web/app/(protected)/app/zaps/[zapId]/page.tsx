@@ -1,14 +1,18 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { ZapEditor } from "@/components/zaps/zap-editor";
 
 export default function ZapDetailsPage() {
   const { zapId } = useParams();
-  console.log("zap", zapId);
+
+  if (!zapId || typeof zapId !== "string") {
+    return <div>Invalid Zap ID</div>;
+  }
 
   return (
-    <main>
-      <div>{zapId}</div>
+    <main className="p-4">
+      <ZapEditor zapId={zapId} />
     </main>
   );
 }
